@@ -1,0 +1,59 @@
+# build output and generated solution
+/build/
+
+# game-derived data (data\README.md); only the README is tracked
+/data/*
+!/data/README.md
+
+# runtime files written next to the DLL/exe when run from elsewhere
+r1-mod.ini
+r1-mod.log
+r1-mod_*.txt
+r1-mod_*.bin
+playerdata_backups/
+backend.log
+launch.out
+launch.err
+
+# tooling
+__pycache__/
+*.pyc
+.vs/
+*.user
+
+# game files and dumps, reverse-engineering databases, keys
+*.ff
+*.zone
+*.iwd
+*.gfx
+*.i64
+*.idb
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+*.dmp
+securitykey.bin
+c1_keys.bin
+codol_sessions.txt
+
+# your own game text and animation files (NOTICE.md), wherever they are put
+r1_english.txt
+r1_xanims_319.bin
+iw4_quick_xanims.bin
+
+# made locally by the backend's setup and runs (backend/README.md)
+/backend/pki/
+/backend/publisher/
+/backend/data/
+/backend/state/
+/backend/logs/
+/backend/startgame.trigger
+
+/docs/*
+!/docs/CLIENT.md
+!/docs/ARCHITECTURE.md
+!/docs/ROADMAP.md
+!/docs/NETCODE_AUDIT.md
+!/docs/COMPATIBILITY.md

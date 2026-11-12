@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <title>Antimony - rhombohedral crystal</title>
+  <rect width="400" height="400" fill="#141414"/>
+  <g fill="none" stroke="#2f80ff" stroke-linejoin="round" stroke-linecap="round">
+    <!-- hidden edges -->
+    <g fill="#2f80ff" stroke="none" opacity=".85"><circle cx="275.8" cy="152.8" r="4"/><circle cx="260.7" cy="169.7" r="4"/><circle cx="245.5" cy="186.5" r="4"/><circle cx="215.2" cy="220.2" r="4"/><circle cx="200.0" cy="237.0" r="4"/><circle cx="124.2" cy="152.8" r="4"/><circle cx="139.3" cy="169.7" r="4"/><circle cx="154.5" cy="186.5" r="4"/><circle cx="184.8" cy="220.2" r="4"/><circle cx="200.0" cy="258.3" r="4"/><circle cx="200.0" cy="279.7" r="4"/><circle cx="200.0" cy="301.0" r="4"/><circle cx="200.0" cy="322.3" r="4"/></g>
+    <!-- visible edges: silhouette, then the front faces -->
+    <path d="M200 35 L291 136 L291 264 L200 365 L109 264 L109 136 Z" stroke-width="14"/>
+    <path d="M200 35 L200 163 M109 264 L200 163 L291 264 M109 136 L109 264 M291 136 L291 264" stroke-width="14"/>
+  </g>
+</svg>

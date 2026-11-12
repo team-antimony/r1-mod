@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <title>Antimony - seal</title>
+  <rect width="400" height="400" fill="#141414"/>
+  <!-- chop: crystal carved out of a solid block, inside a thin border -->
+  <rect x="30" y="30" width="340" height="340" rx="40" fill="#2f80ff"/>
+  <rect x="48" y="48" width="304" height="304" rx="26" fill="none" stroke="#141414" stroke-width="5"/>
+  <!-- rhombohedral crystal: hidden edges dotted -->
+  <g transform="translate(200 200) scale(.72) translate(-200 -200)" fill="none" stroke="#141414" stroke-linejoin="round" stroke-linecap="round">
+    <g fill="#141414" stroke="none"><circle cx="275.8" cy="152.8" r="5"/><circle cx="260.7" cy="169.7" r="5"/><circle cx="245.5" cy="186.5" r="5"/><circle cx="215.2" cy="220.2" r="5"/><circle cx="200.0" cy="237.0" r="5"/><circle cx="124.2" cy="152.8" r="5"/><circle cx="139.3" cy="169.7" r="5"/><circle cx="154.5" cy="186.5" r="5"/><circle cx="184.8" cy="220.2" r="5"/><circle cx="200.0" cy="258.3" r="5"/><circle cx="200.0" cy="279.7" r="5"/><circle cx="200.0" cy="301.0" r="5"/><circle cx="200.0" cy="322.3" r="5"/></g>
+    <path d="M200 35 L291 136 L291 264 L200 365 L109 264 L109 136 Z M200 35 L200 163 M109 264 L200 163 L291 264 M109 136 L109 264 M291 136 L291 264" stroke-width="19"/>
+  </g>
+  <!-- worn spots -->
+  <g fill="#141414"><circle cx="338" cy="340" r="4"/><circle cx="325" cy="346" r="2.5"/><circle cx="60" cy="334" r="3.5"/><circle cx="342" cy="64" r="3"/></g>
+</svg>

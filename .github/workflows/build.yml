@@ -1,0 +1,83 @@
+# Build r1-mod.dll and r1-mod.exe (Release and Debug), run the backend tests, and package the Release build with
+# the backend. A tag v* (e.g. v2026.11.05) also makes a DRAFT release with the zip; a maintainer publishes it.
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        configuration: [Release, Debug]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Generate solution
+        run: tools\premake5.exe vs2022
+
+      - name: Build
+        run: msbuild build\r1-mod.sln /m /p:Configuration=${{ matrix.configuration }} /p:Platform=Win32
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-mod-${{ matrix.configuration }}
+          path: |
+            build/bin/Win32/${{ matrix.configuration }}/r1-mod.dll
+            build/bin/Win32/${{ matrix.configuration }}/r1-mod.exe
+
+      - uses: astral-sh/setup-uv@v3
+        if: matrix.configuration == 'Release'
+
+      - name: Compatibility number
+        if: matrix.configuration == 'Release'
+        run: python tools/check_compat.py
+
+      - name: Backend tests
+        if: matrix.configuration == 'Release'
+        working-directory: backend
+        run: uv run --with cryptography python -m unittest discover -s tests
+
+      - name: Package
+        if: matrix.configuration == 'Release'
+        shell: pwsh
+        run: |
+          $out = 'dist/r1-mod'
+          New-Item -ItemType Directory -Force $out, "$out/tools" | Out-Null
+          Copy-Item build/bin/Win32/Release/r1-mod.dll, build/bin/Win32/Release/r1-mod.exe $out
+          Copy-Item README.md, LICENSE, NOTICE.md, CHANGELOG.md $out
+          Copy-Item -Recurse backend "$out/backend"
+          Copy-Item -Recurse tools/data "$out/tools/data"
+          Get-ChildItem $out -Recurse -Directory -Filter __pycache__ | Remove-Item -Recurse -Force
+          Remove-Item -Recurse -Force "$out/backend/tests"
+          Compress-Archive -Path "$out/*" -DestinationPath dist/r1-mod.zip
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.configuration == 'Release'
+        with:
+          name: r1-mod-package
+          path: dist/r1-mod.zip
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: r1-mod-package
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: r1-mod.zip
