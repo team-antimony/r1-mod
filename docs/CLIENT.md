@@ -404,6 +404,12 @@ to a minute for that). Then: `uv run --with frida python tools\dev\inject.py <dl
 State 2026-11-10: builds, and the detection and every address in `engine_map_319.h` were checked against the
 unpacked 3.19 exe and the QA exe on disk. Not run in a live 3.19 client yet.
 
+Checked again 2026-11-12 against a second, independently made dump of the 3.19.26.22 code (image base
+0x400000): every function address in `engine_map_319.h` starts a function (after `int3`/`ret` padding), every
+data address lies inside the image, the `Cmd_Argv` bytes `engine_detect` matches are there, and the functions that
+use the command list, argc/level tables and the cmd_text lock reference exactly the mapped addresses. One note:
+`Com_sprintf` (0x774900) starts with a `jmp` out of the image (0x20567690), so it should not be called directly.
+
 ## Notes
 
 - Commands need a node in both lists: `0x2E0111C` (walked by the executor `0x58D910`) and `0x2E01224`

@@ -68,7 +68,8 @@
 
 /* --- errors and formatting --- */
 #define EA319_COM_ERROR             0x4F82E0u /* cdecl (code, fmt, ...); fmt is a numeric id plus arguments */
-#define EA319_COM_SPRINTF           0x774900u /* cdecl (buf, size, fmt, ...) */
+#define EA319_COM_SPRINTF           0x774900u /* cdecl (buf, size, fmt, ...); its first instruction is a jmp to
+                                               * 0x20567690, outside the image, so it is not a plain function to call */
 #define EA319_VA                    0x774980u
 #define EA319_COM_EXEC_CONFIG       0x4F6A90u /* queues "exec config_mp.cfg" */
 
