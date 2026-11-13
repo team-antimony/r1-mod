@@ -404,6 +404,25 @@ to a minute for that). Then: `uv run --with frida python tools\dev\inject.py <dl
 State 2026-11-10: builds, and the detection and every address in `engine_map_319.h` were checked against the
 unpacked 3.19 exe and the QA exe on disk. Not run in a live 3.19 client yet.
 
+Checked again 2026-11-12 against a second, independently made dump of the 3.19.26.22 code (image base
+0x400000): every function address in `engine_map_319.h` starts a function (after `int3`/`ret` padding), every
+data address lies inside the image, the `Cmd_Argv` bytes `engine_detect` matches are there, and the functions that
+use the command list, argc/level tables and the cmd_text lock reference exactly the mapped addresses. One note:
+`Com_sprintf` (0x774900) starts with a `jmp` out of the image (0x20567690), so it should not be called directly.
+
+Run live 2026-11-12 (Release build of 2026.11.11.3 plus these notes), injected with `tools\dev\inject.py` into a
+running 3.19.26.22 client (`codol1649370-compatible.exe`, file version 1649370) at the lobby: `engine_detect` chose
+3.19 and the log read `r1-mod ready on 3.19.26.22: 179 engine commands, base 0x00400000`. Through `r1-mod_in.txt`:
+`r1mod` (module base 0x00400000, delta 0x0), `dvar com_maxfps` (`200 (int)`), `dvar version` (`release release 0x3ea
+1649370 May  8 2021 21:20:01 win-x86`), `cmdlist map` (3 matches, 181 commands once r1-mod's were linked), and
+`com_maxfps 144` then `dvar com_maxfps` (`144 (int)`), so the `cmd_text[0]` append under the lock reaches
+`Dvar_Command`. Set back to 200; the client kept running. `dvar sv_hostname` reports not found, as expected on a client.
+
+The QA addresses were checked the same way on 2026-11-12 against a stock QA `codoMP_client_shipRetail.exe`
+(the packed install, PE timestamp 2016-06-15, not unpacked): all 149 addresses in `engine_map.h`, `game.h` and the
+components land where they should. Function addresses start functions, every `*_SITE` / `*_CALL` holds a `call`,
+`VA_CS_JZ` a `jz`, and `engine_detect`'s `Cbuf_AddText` bytes (0x58D840) match, so the stock exe is the same code.
+
 ## Notes
 
 - Commands need a node in both lists: `0x2E0111C` (walked by the executor `0x58D910`) and `0x2E01224`
