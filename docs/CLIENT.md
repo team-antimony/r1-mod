@@ -410,6 +410,11 @@ data address lies inside the image, the `Cmd_Argv` bytes `engine_detect` matches
 use the command list, argc/level tables and the cmd_text lock reference exactly the mapped addresses. One note:
 `Com_sprintf` (0x774900) starts with a `jmp` out of the image (0x20567690), so it should not be called directly.
 
+The QA addresses were checked the same way on 2026-11-12 against a stock QA `codoMP_client_shipRetail.exe`
+(the packed install, PE timestamp 2016-06-15, not unpacked): all 149 addresses in `engine_map.h`, `game.h` and the
+components land where they should. Function addresses start functions, every `*_SITE` / `*_CALL` holds a `call`,
+`VA_CS_JZ` a `jz`, and `engine_detect`'s `Cbuf_AddText` bytes (0x58D840) match, so the stock exe is the same code.
+
 ## Notes
 
 - Commands need a node in both lists: `0x2E0111C` (walked by the executor `0x58D910`) and `0x2E01224`
